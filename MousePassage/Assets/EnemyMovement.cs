@@ -5,11 +5,13 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     public float slowVel;
-
+    public float distancia = 8;
     float vel;
 
     Transform alvo;
     RatMovement alvoScript;
+
+    public Patada patada;
 
     // Start is called before the first frame update
     void Start()
@@ -21,18 +23,29 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Vector3.Distance(transform.position, alvo.position) > 12)
+        if (alvo != null)
         {
-            vel = alvoScript.vel;
-        }
-        else
-        {
-            vel = slowVel;
+            if (Vector3.Distance(transform.position, alvo.position) > distancia)
+            {
+                vel = alvoScript.vel;
+            }
+            else
+            {
+                vel = slowVel;
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        transform.Translate(new Vector2(0, vel) * Time.deltaTime);
+        if (alvo != null)
+        {
+            transform.Translate(new Vector2(0, vel) * Time.deltaTime);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        patada.Kill(alvo);
+        Destroy(alvo.gameObject);
     }
 }

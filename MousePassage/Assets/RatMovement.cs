@@ -5,15 +5,19 @@ using UnityEngine;
 public class RatMovement : MonoBehaviour
 {
     public float vel;
+    public float squishyVel;
     public float moveVel;
 
     bool squishy = false;
     Rigidbody2D rb;
 
+    Menu menu;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        menu = GameObject.FindGameObjectWithTag("GameController").GetComponent<Menu>();
     }
 
     // Update is called once per frame
@@ -35,6 +39,19 @@ public class RatMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + new Vector2(Input.GetAxis("Horizontal") * moveVel, vel) * Time.deltaTime);
+        if (!squishy)
+        {
+            rb.MovePosition(rb.position + new Vector2(Input.GetAxis("Horizontal") * moveVel, vel) * Time.deltaTime);
+        }
+        else
+        {
+            rb.MovePosition(rb.position + new Vector2(Input.GetAxis("Horizontal") * moveVel, squishyVel) * Time.deltaTime);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        menu.MenuUp();
+        menu.restart = true;
     }
 }

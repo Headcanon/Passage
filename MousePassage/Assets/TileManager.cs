@@ -33,10 +33,13 @@ public class TileManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(alvo.position.y - tileLeght> (spawnY - tilesOnScreen * tileLeght))
+        if (alvo != null)
         {
-            SpawnTile();
-            DestroyTile();
+            if (alvo.position.y - tileLeght > (spawnY - tilesOnScreen * tileLeght))
+            {
+                SpawnTile();
+                DestroyTile();
+            }
         }
     }
 
