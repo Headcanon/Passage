@@ -13,6 +13,13 @@ public class ListaTiles : MonoBehaviour
     {
         listaTiles = new List<GameObject>();
     }
+    
+    public ListaTiles(string pasta)
+    {
+    	listaTiles = new List<GameObject>();
+    	
+    	AddFromFolder(pasta);
+    }
     #endregion
 
     #region Adicionar

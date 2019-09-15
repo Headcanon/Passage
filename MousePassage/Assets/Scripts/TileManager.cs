@@ -16,11 +16,9 @@ public class TileManager : MonoBehaviour
 
     private void Awake()
     {
-        tiles = new ListaTiles();
+        tiles = new ListaTiles("Fase1");
         activeTiles = new List<GameObject>();
         alvo = GameObject.FindGameObjectWithTag("Player").transform;
-
-        tiles.AddFromFolder("Fase1");
     }
 
     // Start is called before the first frame update
