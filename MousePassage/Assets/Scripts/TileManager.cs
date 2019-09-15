@@ -5,7 +5,7 @@ using UnityEngine;
 public class TileManager : MonoBehaviour
 {
     
-    public List<GameObject> tiles;
+    ListaTiles tiles;
     List<GameObject> activeTiles;
 
     Transform alvo;
@@ -14,16 +14,18 @@ public class TileManager : MonoBehaviour
     float tileLeght = 18;
     float tilesOnScreen = 5;
 
-    int lastPrefabIndex = 0;
+    private void Awake()
+    {
+        tiles = new ListaTiles();
+        activeTiles = new List<GameObject>();
+        alvo = GameObject.FindGameObjectWithTag("Player").transform;
+
+        tiles.AddFromFolder("Fase1");
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        activeTiles = new List<GameObject>();
-        alvo = GameObject.FindGameObjectWithTag("Player").transform;
-
-        lastPrefabIndex = Random.Range(0, activeTiles.Count);
-
         for (int i = 0; i < tilesOnScreen; i++)
         {
             SpawnTile();
@@ -46,7 +48,7 @@ public class TileManager : MonoBehaviour
     void SpawnTile()
     {
         GameObject go;
-        go = Instantiate(tiles[RandomIndex()], transform) as GameObject;
+        go = Instantiate(tiles.AleatorioSemRepetir(), transform) as GameObject;
         go.transform.position = Vector2.up * spawnY;
 
         spawnY += tileLeght;
@@ -58,19 +60,5 @@ public class TileManager : MonoBehaviour
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
-    }
-
-    int RandomIndex()
-    {
-        if (tiles.Count <= 1)
-            return 0;
-
-        int newIndex = lastPrefabIndex;
-        while (newIndex == lastPrefabIndex)
-        {
-            newIndex = Random.Range(0, tiles.Count);
-        }
-        lastPrefabIndex = newIndex;
-        return newIndex;
     }
 }
