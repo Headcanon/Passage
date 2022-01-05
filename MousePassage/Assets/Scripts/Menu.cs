@@ -7,29 +7,54 @@ public class Menu : MonoBehaviour
 {
     public GameObject tela;
 
-    bool menup = false;
+    private bool menup = false;
     public bool restart = false;
+
+    public float timer = 60;
+    public GameObject texto;
+
     // Start is called before the first frame update
     void Start()
     {
-        MenuUp();
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            MenuUp();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(menup && Input.GetKey(KeyCode.Mouse0))
+        if (menup)
         {
-            MenuDown();
+            #region Flash text
+            timer--;
+
+            if (timer <= 0)
+            {
+                FlipTextVisibility();
+                timer = 60;
+            }
+            #endregion
+
+            if (Input.anyKeyDown)
+            {
+                MenuDown();
+            }
         }
+
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
     }
 
+    #region Menu management
     public void MenuUp()
     {
+        if (tela == null)
+            return;
+
         tela.SetActive(true);
         menup = true;
         Time.timeScale = 0f;
@@ -42,7 +67,20 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
         if(restart)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
+        }
+    }
+    #endregion
+
+    private void FlipTextVisibility()
+    {
+        if(texto.activeSelf)
+        {
+            texto.SetActive(false);
+        }
+        else
+        {
+            texto.SetActive(true);
         }
     }
 }
